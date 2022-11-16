@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ni tan frágil</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="navbar-center">
+                <img class="logo" src="./img/logo-ni-tan-fragil.png" alt="logo">
+                <h2>NI TAN FRÁGIL</h2>
+                <div class="cart-btn"> 
+                    <div class="nav-icon"><img src="./img/shopping-bag.png" alt="Bolsa de compras"></div>
+                    <div class="cart-items">0</div>
+                </div>
+            </div>
+        </nav>
+    </header>
+    <main>
+        <section class="hero">
+            <img src="./img/hero.jpg" alt="Chico posando con remera Ni tan frágil">
+            <div>
+                <h1>Ni <br> tan <br> frágil</h1>
+            </div>
+            <div>
+                <h2>25%0FF</h2>
+                <h3>Ingresá el código <span>SpringSale</span> y comprá con descuento en toda la tienda</h3>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" aria-label="Username"
+                    aria-describedby="basic-addon1">
+                    <button class="btn btn-primary" type="submit">YEN2</button>
+                </div>
+            </div>
+        </section>
+        <section class="shop">
+            <h2>ELEGÍ TU NI TAN FRÁGIL</h2>
+            <div id="contenedorRemeras" class="productosRemeras">
+                <div class="card" style="width: 18rem;">
+                    <img src="./img/remeron-harta-naranja.jpg" class="card-img-top img-fluid py-3" alt="${producto.alt}">
+                    <div class="card-body">
+                        <h4 class="card-title">Harta</h4>
+                        <p class="card-text">Remerón | Blanco</p>
+                        <h5>$4200</h5>
+                        <button class="btn btn-primary btnProduct btnComprar">Agregar al Carrito</button>
+                    </div>
+                </div>;
+            </div>
+        </section>
+        <div class="cart-overlay">
+            <div class="cart">
+                <div class="close-cart">
+                    <img src="./img/close-shopping-cart.png" alt="botón cerrar carrito">
+                </div>
+                <h2>Mi carrito</h2>
+                <div class="cart-content">
+                    <!-- cart item -->
+                    <div class="cart-item">
+                        <img src="./img/remeron-harta-naranja.jpg" alt="foto producto remera gata harta">
+                        <div class="cart-item-data">
+                            <div>
+                                <h4>Harta</h4>
+                                <h5>$4200</h5>
+                            <span class="remove-item">Quitar</span>
+                            </div>
+                            <div class="arrows">
+                                <img src="./img/down-arrow.png" alt="flecha para agregar producto">
+                                <p class="item-amount">1</p>
+                                <img src="./img/down-arrow.png" alt="flecha para reducir producto">
+                            </div>
+                        </div>
+                    </div>
+                    <!-- end cart item -->
+                </div>
+                <div class="cart-footer">
+                    <h3>TOTAL: $ <span class="cart-total">0</span></h3>
+                    <button class="clear-cart banner-btn">Limpiar carrito</button>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <script src="main.js"></script>
+</body>
+</html>
