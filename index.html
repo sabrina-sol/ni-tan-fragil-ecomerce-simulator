@@ -15,8 +15,8 @@
                 <img class="logo" src="./img/logo-ni-tan-fragil.png" alt="logo">
                 <h2>NI TAN FRÁGIL</h2>
                 <div class="cart-btn"> 
-                    <div class="nav-icon"><img src="./img/shopping-bag.png" alt="Bolsa de compras"></div>
-                    <div class="cart-items">0</div>
+                    <div id="bag-cart" class="nav-icon"><img src="./img/shopping-bag.png" alt="Bolsa de compras"></div>
+                    <div id="cart-items" class="cart-items">0</div>
                 </div>
             </div>
         </nav>
@@ -40,7 +40,7 @@
         <section class="shop">
             <h2>ELEGÍ TU NI TAN FRÁGIL</h2>
             <div id="contenedorRemeras" class="productosRemeras">
-                <div class="card" style="width: 18rem;">
+                <!--<div class="card" style="width: 18rem;">
                     <img src="./img/remeron-harta-naranja.jpg" class="card-img-top img-fluid py-3" alt="${producto.alt}">
                     <div class="card-body">
                         <h4 class="card-title">Harta</h4>
@@ -48,17 +48,18 @@
                         <h5>$4200</h5>
                         <button class="btn btn-primary btnProduct btnComprar">Agregar al Carrito</button>
                     </div>
-                </div>;
+                </div>;-->
             </div>
         </section>
-        <div class="cart-overlay">
-            <div class="cart">
+        <div id="cart-overlay" class="cart-overlay">
+            <div id="cart" class="cart">
                 <div class="close-cart">
                     <img src="./img/close-shopping-cart.png" alt="botón cerrar carrito">
                 </div>
                 <h2>Mi carrito</h2>
-                <div class="cart-content">
+                <div id="cart-content" class="cart-content">
                     <!-- cart item -->
+                    <!-- 
                     <div class="cart-item">
                         <img src="./img/remeron-harta-naranja.jpg" alt="foto producto remera gata harta">
                         <div class="cart-item-data">
@@ -73,12 +74,13 @@
                                 <img src="./img/down-arrow.png" alt="flecha para reducir producto">
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                     <!-- end cart item -->
                 </div>
                 <div class="cart-footer">
-                    <h3>TOTAL: $ <span class="cart-total">0</span></h3>
-                    <button class="clear-cart banner-btn">Limpiar carrito</button>
+                    <h3>TOTAL: $ <span id="cart-total">0</span></h3>
+                    <h4>DESCUENTO: $ <span id="descuento"></span></h4>
+                    <button id="clear-cart" class="btn btn-light">Limpiar carrito</button>
                 </div>
             </div>
         </div>
