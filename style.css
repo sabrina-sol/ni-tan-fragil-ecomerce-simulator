@@ -53,8 +53,9 @@ body {
 }
 
 .logo {
-    width: 50px;
+    width: 45px;
     height: 50px;
+    padding-bottom: 10px;
 }
 
 .nav-icon img {
@@ -282,6 +283,9 @@ body {
 .remove-item {
     color: wheat;
     cursor: pointer;
+    border: none;
+    background: none;
+    font-family: slabo27px;
 }
 
 .arrows {
@@ -311,8 +315,14 @@ body {
 
 .cart-footer h3 {
     text-transform: capitalize;
-    margin-bottom: 1rem;
+    margin-bottom: 1.2rem;
     font-family: oswald;
+}
+
+.cart-footer h4 {
+    font-family: oswald;
+    font-size: 1.2rem;
+    margin-bottom: 1.7rem;
 }
 
 #clear-cart {

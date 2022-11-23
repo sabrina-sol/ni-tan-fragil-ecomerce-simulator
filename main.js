@@ -14,6 +14,8 @@ let crossCart = document.querySelectorAll(".close-cart");
 let cartTotal = document.getElementById("cart-total");
 let cartItems = document.getElementById("cart-items");
 let off = document.getElementById("descuento");
+let btnOff = document.getElementById("btn-descuento");
+let inputOff = document.getElementById("input-descuento");
 
 let cart = [];
 
@@ -83,7 +85,7 @@ remeras_en_stock.forEach((producto) => {
 })
 
 /* -------------------------------------------------------------------------- */
-/*                                 ADD/REMOVE TO/FROM CART                                */
+/*                                 ADD/REMOVE TO/FROM CART                    */
 /* -------------------------------------------------------------------------- */
 
 //Agregar productos al carrito
@@ -93,7 +95,6 @@ function agregar_a_carrito (e) {
     cart.push(inCart);
     renderizar_carrito();
     actualizar_items_carrito();
-    aplicar_descuento();
 };
 
 //Renderizar los productos en el carrito
@@ -108,36 +109,91 @@ function renderizar_carrito() {
             <div>
                 <h4>${producto.nombre}</h4>
                 <h5>$${producto.precio}</h5>
-                <span class="remove-item">Quitar</span>
+                <button class="remove-item" onClick = "eliminarDelCarrito(${producto.id_card})"<span>Quitar</span></button>
             </div>
             <div class="arrows">
-                <img src="./img/down-arrow.png" alt="flecha para agregar producto">
+                <img class="arrow-up" src="./img/down-arrow.png" alt="flecha para agregar producto">
                 <p class="item-amount">${producto.cantidad}</p>
-                <img src="./img/down-arrow.png" alt="flecha para reducir producto">
+                <img class="arrow-down" src="./img/down-arrow.png" alt="flecha para reducir producto">
             </div>
         </div>`;
         cartContent.append(cartItem);
     });    
-    //Quitar producto DOM
-    let btn_quitar = document.getElementsByClassName("remove-item");
-    for (let boton of btn_quitar) {
-        boton.addEventListener("click", (e) => {
-            let eliminarProducto = e.target.parentNode.parentNode.parentNode;
-            eliminarProducto.remove();
-        });
-    };
-    //Limpiar carrito
-    clearCartBtn.addEventListener("click", () => {
-        cart = [];
-        cartContent.remove();
-        cartTotal.innerText = 0;
-        cartItems.innerText = 0;
-        off.innerText = 0;
-    });
     //Calcular total
     calcular_total();
 };
 
+//Quitar un producto
+const eliminarDelCarrito = (id) => {
+    const producto = cart.find((producto) => producto.id === id);
+    cart.splice(cart.indexOf(producto), 1);
+    renderizar_carrito();
+    actualizar_items_carrito();
+};
+
+//Limpiar todo el carrito
+clearCartBtn.addEventListener("click", () => {
+    cart.splice(0, cart.length);
+    renderizar_carrito();
+    actualizar_items_carrito();
+});
+
+//Aumentar y disminuir cantidades del producto en carrito
+
+for(let item of cartContent) {
+    item.addEventListener("click", event => {
+        if (event.target.classList.contains("arrow-up")) {
+            let addAmount = event.target;
+            let id = addAmount.dataset.id;
+            let tempItem = cart.find(item => item.id === id);
+            tempItem.cantidad = tempItem.cantidad + 1;
+            addAmount.nextElementSibling.innerText = tempItem.cantidad;
+            actualizar_items_carrito();
+            calcular_total();
+        } else if (event.target.classList.contains("arrow-down")) {
+            let lowerAmount = event.target;
+            let id = lowerAmount.dataset.id;
+            let tempItem = cart.find(item => item.id === id);
+            tempItem.cantidad = tempItem.cantidad - 1;
+            lowerAmount.previousElementSibling.innerText = tempItem.cantidad;
+            actualizar_items_carrito();
+            calcular_total();
+            if (tempItem.cantidad == 0) {
+                eliminarDelCarrito ();
+                tempItem.cantidad = 1;
+            }
+        }
+    })
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                   25% OFF                                  */
+/* -------------------------------------------------------------------------- */
+
+btnOff.addEventListener("click", () => {
+    if (inputOff.value === "SpringSale") {
+        console.log ("¡Ya podés disfrutar un 25%OFF en toda la tienda!")
+        Toastify({
+            text: "¡Ya podés disfrutar un 25%OFF en toda la tienda! 😎",
+            style:{
+                fontFamily: 'oswald',
+                fontSize: '1.4rem',
+                background: '#808C56',
+            },
+            gravity: "bottom"
+        }).showToast();
+        calcular_total();
+    } else if (inputOff.value === "") {
+        console.log("¡Escribí el código SpringSale y animate a adquirir un MEGA descuento!")
+    } else {
+        Swal.fire({
+            title: 'Oops! Código inválido',
+            html: 'Volvé a ingresar el cupón de descuento' + '<br>' +
+            '(revisá las mayúsculas 😉)',
+            icon: 'error'
+        });
+    }
+});
 
 /* -------------------------------------------------------------------------- */
 /*                                TOTAL IN CART                               */
@@ -154,17 +210,14 @@ function actualizar_items_carrito () {
 function calcular_total () {
     let total = 0;
     cartTotal.innerText = 0;
+    off.innerText = 0;
     cart.forEach((producto) => {
         total += producto.precio * producto.cantidad;
+        let descuentoProductos = total * 0.25;
+        if (inputOff.value === "SpringSale") {
+            off.innerText = descuentoProductos;
+            total = total - descuentoProductos;
+        }
     });
     cartTotal.innerText = total;
 }
-
-function aplicar_descuento () {
-    cart.forEach(item => {
-        let descuentoProducto = item.precio * 0.25;
-        off.innerText += descuentoProducto;
-        let descuentoTotal = item.precio - descuentoProducto;
-        cartTotal.innerText = descuentoTotal;
-    });
-};
