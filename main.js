@@ -91,10 +91,16 @@ remeras_en_stock.forEach((producto) => {
 //Agregar productos al carrito
 function agregar_a_carrito (e) {
     let btn_compra = e.target.id;
+    //let alreadyInCart = cart.some(element => element.id_btn_card === btn_compra);
     let inCart = remeras_en_stock.find(element => element.id_btn_card === btn_compra);
+    /*if (alreadyInCart) {
+        //alreadyInCart.cantidad++
+    }*/
     cart.push(inCart);
     renderizar_carrito();
     actualizar_items_carrito();
+    let cart_json = JSON.stringify(cart);
+    localStorage.setItem("cart", cart_json);
 };
 
 //Renderizar los productos en el carrito
