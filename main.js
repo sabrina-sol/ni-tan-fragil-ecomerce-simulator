@@ -53,7 +53,7 @@ fetch(productsJSON)
     })
 
 const productosStock = (data) => {
-    remeras_en_stock.forEach((producto) => {
+    data.forEach((producto) => {
         const div_producto = document.createElement("div");
         div_producto.classList.add("card");
         div_producto.style.width = "18rem";
@@ -76,40 +76,6 @@ const productosStock = (data) => {
     })
 }
 
-/*fetch("products.json")
-    .then(response => response.json())
-    .then(data => {
-        productsJSON = data;
-        for (let remera of data) {
-            remeras_en_stock.push(remera)
-        }
-    })
-
-let remeras_en_stock = [];
-console.log(remeras_en_stock);*/
-
-/*remeras_en_stock.forEach((producto) => {
-    const div_producto = document.createElement("div");
-    div_producto.classList.add("card");
-    div_producto.style.width = "18rem";
-    div_producto.innerHTML = `
-    <div id="${producto.id_card}">
-        <img src="${producto.imagen}" class="card-img-top img-fluid py-3" alt="${producto.alt}">
-        <div class="card-body">
-            <h4 class="card-title"> ${producto.nombre} </h4>
-            <p class="card-text"> ${producto.mangas} | ${producto.color} </p>
-            <h5> $${producto.precio} </h5>
-            <button id="${producto.id_btn_card}" class="btn btn-primary btnProduct btnComprar"> Agregar al Carrito </button>
-        </div>
-    </div>`;
-    contenedor_remeras_stock.appendChild(div_producto);
-    //Event Listener to Every Card Button
-    let btns_comprar = document.querySelectorAll(".btnComprar");
-    for (let boton of btns_comprar) {
-        boton.addEventListener("click", agregar_a_carrito);
-    }
-})*/
-
 /* -------------------------------------------------------------------------- */
 /*                                 ADD/REMOVE TO/FROM CART                    */
 /* -------------------------------------------------------------------------- */
@@ -123,12 +89,13 @@ function agregar_a_carrito (e) {
     let inCart = remeras_en_stock.find(element => element.id_btn_card === btn_compra);
     if (alreadyInCart(inCart.id_btn_card)) {
         cart.forEach ((producto) => {
-            if (inCart.id === producto.id) {
+            if (btn_compra.id === producto.id) {
                 producto.cantidad++;
             }
-        })
+        });
         actualizar_items_carrito();
         //FALTA REVISAR DUPLICADO DE PRODUCTOS
+        
     } else {
         cart.push(inCart);
         localStorage.setItem("cart", JSON.stringify(cart));
@@ -141,7 +108,6 @@ function agregar_a_carrito (e) {
 function renderizar_carrito() {
     let cartContent = document.getElementById("cart-content");
     cartContent.innerHTML = "";
-    console.log(cart);
     cart.forEach(producto => {
         let cartItem = document.createElement("div");
         cartItem.classList.add("cart-item");
@@ -166,8 +132,13 @@ function renderizar_carrito() {
 
 //Quitar un producto
 const eliminarDelCarrito = (id) => {
-    const producto = cart.find((producto) => producto.id === id);
+    const producto = cart.find((producto) => {
+        producto.id === id;
+        //producto.cantidad = 1;
+        //REVISAR DUPLICADO DE RESET A 1
+    });
     cart.splice(cart.indexOf(producto), 1);
+    localStorage.setItem("cart", JSON.stringify(cart));
     renderizar_carrito();
     actualizar_items_carrito();
 };
@@ -175,6 +146,7 @@ const eliminarDelCarrito = (id) => {
 //Limpiar todo el carrito
 clearCartBtn.addEventListener("click", () => {
     cart.splice(0, cart.length);
+    localStorage.setItem("cart", JSON.stringify(cart));
     renderizar_carrito();
     actualizar_items_carrito();
 });
@@ -213,7 +185,6 @@ for(let item of cartContent) {
 
 btnOff.addEventListener("click", () => {
     if (inputOff.value === "SpringSale") {
-        console.log ("¡Ya podés disfrutar un 25%OFF en toda la tienda!")
         Toastify({
             text: "¡Ya podés disfrutar un 25%OFF en toda la tienda! 😎",
             style:{
