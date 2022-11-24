@@ -2,6 +2,7 @@
 /*                                  VARIABLES                                 */
 /* -------------------------------------------------------------------------- */
 
+let productsJSON = './products.json';
 const cartBtn = document.querySelectorAll(".cart-btn");
 const closeCartBtn = document.querySelectorAll(".close-cart");
 const clearCartBtn = document.getElementById("clear-cart");
@@ -17,7 +18,7 @@ let off = document.getElementById("descuento");
 let btnOff = document.getElementById("btn-descuento");
 let inputOff = document.getElementById("input-descuento");
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
 
 /* -------------------------------------------------------------------------- */
 /*                               SHOW/EXIT CART                               */
@@ -26,6 +27,7 @@ let cart = [];
 bagCart.addEventListener("click", () => {
     cartOverlay.classList.add("transparentBcg");
     cartDOM.classList.add("showCart");
+    renderizar_carrito();
 });
 
 for (let cross of crossCart) {
@@ -39,30 +41,54 @@ for (let cross of crossCart) {
 /*                              PRODUCTS IN STOCK                             */
 /* -------------------------------------------------------------------------- */
 
-class Remera {
-    constructor (id_card, id_btn_card, nombre, imagen, alt, mangas, color, precio, cantidad) {
-        this.id_card = id_card;
-        this.id_btn_card = id_btn_card;
-        this.nombre = nombre;
-        this.imagen = imagen;
-        this.alt = alt;
-        this.mangas = mangas;
-        this.color = color;
-        this.precio = precio;
-        this.cantidad = cantidad;
-    }
+let remeras_en_stock = [];
+
+fetch(productsJSON)
+    .then ((response) => response.json())
+    .then ((data) => {
+        productosStock(data);
+        for (let remera of data) {
+            remeras_en_stock.push(remera)
+        }
+    })
+
+const productosStock = (data) => {
+    remeras_en_stock.forEach((producto) => {
+        const div_producto = document.createElement("div");
+        div_producto.classList.add("card");
+        div_producto.style.width = "18rem";
+        div_producto.innerHTML = `
+        <div id="${producto.id_card}">
+            <img src="${producto.imagen}" class="card-img-top img-fluid py-3" alt="${producto.alt}">
+            <div class="card-body">
+                <h4 class="card-title"> ${producto.nombre} </h4>
+                <p class="card-text"> ${producto.mangas} | ${producto.color} </p>
+                <h5> $${producto.precio} </h5>
+                <button id="${producto.id_btn_card}" class="btn btn-primary btnProduct btnComprar"> Agregar al Carrito </button>
+            </div>
+        </div>`;
+        contenedor_remeras_stock.appendChild(div_producto);
+        //Event Listener to Every Card Button
+        let btns_comprar = document.querySelectorAll(".btnComprar");
+        for (let boton of btns_comprar) {
+            boton.addEventListener("click", agregar_a_carrito);
+        }
+    })
 }
 
-let ficcion = new Remera('ficcion', 'ficcion_btn', 'FICCIÓN', './img/remeron-ficcion.jpg', 'Remerón collage ficción', 'Blanco', 'Remerón', 4200, 1);
-let jardin = new Remera('jardin', 'jardin_btn', 'JARDÍN MÁGICO', './img/remeron-jardin.jpg', 'Remerón collage jardín', 'Blanco', 'Remerón', 4200, 1);
-let luna = new Remera('luna', 'luna_btn', 'LUNA', './img/remeron-luna.jpg', 'Remerón collage luna', 'Blanco', 'Remerón', 4200, 1);
-let harta_naranja = new Remera('hartaNaranja', 'harta_naranja_btn', 'HARTA', './img/remeron-harta-naranja.jpg', 'Remerón collage harta', 'Blanco', 'Remerón', 4200, 1);
-let caos_blanco = new Remera('caosBlanco', 'caos_blanco_btn', 'DEL CAOS FLORECE', './img/caos-blanco.jpg', 'Musculosa collage caos', 'Blanco', 'Musculosa', 3200, 1);
-let mente_blanco = new Remera('menteBlanco', 'mente_blanco_btn', 'LA LLAVE', './img/mente-blanco.jpg', 'Musculosa collage llave', 'Blanco', 'Musculosa', 3200, 1);
+/*fetch("products.json")
+    .then(response => response.json())
+    .then(data => {
+        productsJSON = data;
+        for (let remera of data) {
+            remeras_en_stock.push(remera)
+        }
+    })
 
-let remeras_en_stock = [ficcion, jardin, luna, harta_naranja, caos_blanco, mente_blanco];
+let remeras_en_stock = [];
+console.log(remeras_en_stock);*/
 
-remeras_en_stock.forEach((producto) => {
+/*remeras_en_stock.forEach((producto) => {
     const div_producto = document.createElement("div");
     div_producto.classList.add("card");
     div_producto.style.width = "18rem";
@@ -82,31 +108,40 @@ remeras_en_stock.forEach((producto) => {
     for (let boton of btns_comprar) {
         boton.addEventListener("click", agregar_a_carrito);
     }
-})
+})*/
 
 /* -------------------------------------------------------------------------- */
 /*                                 ADD/REMOVE TO/FROM CART                    */
 /* -------------------------------------------------------------------------- */
 
+actualizar_items_carrito ();
+
 //Agregar productos al carrito
 function agregar_a_carrito (e) {
     let btn_compra = e.target.id;
-    //let alreadyInCart = cart.some(element => element.id_btn_card === btn_compra);
+    const alreadyInCart = id => cart.some(element => element.id_btn_card === btn_compra);
     let inCart = remeras_en_stock.find(element => element.id_btn_card === btn_compra);
-    /*if (alreadyInCart) {
-        //alreadyInCart.cantidad++
-    }*/
-    cart.push(inCart);
-    renderizar_carrito();
-    actualizar_items_carrito();
-    let cart_json = JSON.stringify(cart);
-    localStorage.setItem("cart", cart_json);
+    if (alreadyInCart(inCart.id_btn_card)) {
+        cart.forEach ((producto) => {
+            if (inCart.id === producto.id) {
+                producto.cantidad++;
+            }
+        })
+        actualizar_items_carrito();
+        //FALTA REVISAR DUPLICADO DE PRODUCTOS
+    } else {
+        cart.push(inCart);
+        localStorage.setItem("cart", JSON.stringify(cart));
+        renderizar_carrito();
+        actualizar_items_carrito();
+    }
 };
 
 //Renderizar los productos en el carrito
 function renderizar_carrito() {
     let cartContent = document.getElementById("cart-content");
     cartContent.innerHTML = "";
+    console.log(cart);
     cart.forEach(producto => {
         let cartItem = document.createElement("div");
         cartItem.classList.add("cart-item");

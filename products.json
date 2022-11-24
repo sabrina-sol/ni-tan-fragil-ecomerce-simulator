@@ -1,0 +1,68 @@
+[
+    {
+        "id_card": "ficcion",
+        "id_btn_card": "ficcion_btn",
+        "nombre": "FICCIÓN",
+        "imagen": "./img/remeron-ficcion.jpg",
+        "alt": "Remerón collage ficción",
+        "mangas": "Remerón",
+        "color": "Blanco",
+        "precio": 4200,
+        "cantidad": 1
+    },
+    {
+        "id_card": "jardin",
+        "id_btn_card": "jardin_btn",
+        "nombre": "JARDÍN MÁGICO",
+        "imagen": "./img/remeron-jardin.jpg",
+        "alt": "Remerón collage jardín",
+        "mangas": "Remerón",
+        "color": "Blanco",
+        "precio": 4200,
+        "cantidad": 1
+    },
+    {
+        "id_card": "luna",
+        "id_btn_card": "luna_btn",
+        "nombre": "LUNA",
+        "imagen": "./img/remeron-luna.jpg",
+        "alt": "Remerón collage luna",
+        "mangas": "Remerón",
+        "color": "Blanco",
+        "precio": 4200,
+        "cantidad": 1
+    },
+    {
+        "id_card": "hartaNaranja",
+        "id_btn_card": "harta_naranja_btn",
+        "nombre": "HARTA",
+        "imagen": "./img/remeron-harta-naranja.jpg",
+        "alt": "Remerón collage harta",
+        "mangas": "Remerón",
+        "color": "Blanco",
+        "precio": 4200,
+        "cantidad": 1
+    },
+    {
+        "id_card": "caosBlanco",
+        "id_btn_card": "caos_blanco_btn",
+        "nombre": "DEL CAOS FLORECE",
+        "imagen": "./img/caos-blanco.jpg",
+        "alt": "Musculosa collage caos",
+        "mangas": "Musculosa",
+        "color": "Blanco",
+        "precio": 3200,
+        "cantidad": 1
+    },
+    {
+        "id_card": "menteBlanco",
+        "id_btn_card": "mente_blanco_btn",
+        "nombre": "LA LLAVE",
+        "imagen": "./img/mente-blanco.jpg",
+        "alt": "Musculosa collage llave",
+        "mangas": "Musculosa",
+        "color": "Blanco",
+        "precio": 3200,
+        "cantidad": 1
+    }
+]
