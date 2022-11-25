@@ -85,17 +85,11 @@ actualizar_items_carrito ();
 //Agregar productos al carrito
 function agregar_a_carrito (e) {
     let btn_compra = e.target.id;
-    const alreadyInCart = id => cart.some(element => element.id_btn_card === btn_compra);
+    const alreadyInCart = id => cart.some(element => element.id_btn_card === id);
     let inCart = remeras_en_stock.find(element => element.id_btn_card === btn_compra);
     if (alreadyInCart(inCart.id_btn_card)) {
-        cart.forEach ((producto) => {
-            if (btn_compra.id === producto.id) {
-                producto.cantidad++;
-            }
-        });
+        inCart.cantidad++;
         actualizar_items_carrito();
-        //FALTA REVISAR DUPLICADO DE PRODUCTOS
-        
     } else {
         cart.push(inCart);
         localStorage.setItem("cart", JSON.stringify(cart));
@@ -116,7 +110,7 @@ function renderizar_carrito() {
             <div>
                 <h4>${producto.nombre}</h4>
                 <h5>$${producto.precio}</h5>
-                <button class="remove-item" onClick = "eliminarDelCarrito(${producto.id_card})"<span>Quitar</span></button>
+                <button class="remove-item"<span>Quitar</span></button>
             </div>
             <div class="arrows">
                 <img class="arrow-up" src="./img/down-arrow.png" alt="flecha para agregar producto">
@@ -125,26 +119,33 @@ function renderizar_carrito() {
             </div>
         </div>`;
         cartContent.append(cartItem);
+        //Funcionalidad para quitar un producto
+        let btn_quitar = document.querySelectorAll(".remove-item");
+        for (btn of btn_quitar) {
+            btn.addEventListener("click", (e) => {
+                let elemento = e.target.parentNode.parentNode.parentNode;
+                elemento.remove();
+                let dataProducto = e.target.parentNode
+                let nombreProducto = dataProducto.children[0].innerText;
+                let aQuitar = cart.find(element => element.nombre === nombreProducto);
+                const quitarElemento = cart.some(item => item.nombre === nombreProducto);
+                if (quitarElemento) {
+                    cart.splice(cart.indexOf(aQuitar), 1);
+                    localStorage.setItem("cart", JSON.stringify(cart));
+                    calcular_total();
+                }
+            });
+        };
     });    
     //Calcular total
     calcular_total();
 };
 
-//Quitar un producto
-const eliminarDelCarrito = (id) => {
-    const producto = cart.find((producto) => {
-        producto.id === id;
-        //producto.cantidad = 1;
-        //REVISAR DUPLICADO DE RESET A 1
-    });
-    cart.splice(cart.indexOf(producto), 1);
-    localStorage.setItem("cart", JSON.stringify(cart));
-    renderizar_carrito();
-    actualizar_items_carrito();
-};
-
 //Limpiar todo el carrito
 clearCartBtn.addEventListener("click", () => {
+    for (let producto of cart) {
+        producto.cantidad = 1;
+    }
     cart.splice(0, cart.length);
     localStorage.setItem("cart", JSON.stringify(cart));
     renderizar_carrito();
@@ -152,32 +153,21 @@ clearCartBtn.addEventListener("click", () => {
 });
 
 //Aumentar y disminuir cantidades del producto en carrito
+//REVISAR
 
-for(let item of cartContent) {
-    item.addEventListener("click", event => {
-        if (event.target.classList.contains("arrow-up")) {
-            let addAmount = event.target;
-            let id = addAmount.dataset.id;
-            let tempItem = cart.find(item => item.id === id);
-            tempItem.cantidad = tempItem.cantidad + 1;
-            addAmount.nextElementSibling.innerText = tempItem.cantidad;
-            actualizar_items_carrito();
-            calcular_total();
-        } else if (event.target.classList.contains("arrow-down")) {
-            let lowerAmount = event.target;
-            let id = lowerAmount.dataset.id;
-            let tempItem = cart.find(item => item.id === id);
-            tempItem.cantidad = tempItem.cantidad - 1;
-            lowerAmount.previousElementSibling.innerText = tempItem.cantidad;
-            actualizar_items_carrito();
-            calcular_total();
-            if (tempItem.cantidad == 0) {
-                eliminarDelCarrito ();
-                tempItem.cantidad = 1;
-            }
-        }
-    })
+let addAmount = document.querySelectorAll(".arrow-up");
+let lowerAmount = document.querySelectorAll(".arrow-down");
+
+for (let btn_add of addAmount) {
+    btn_add.addEventListener("click", hola());
 }
+for (let low of lowerAmount) {
+    low.addEventListener("click", console.log("resta"));
+}
+
+function hola () {
+    console.log("hola");
+};
 
 /* -------------------------------------------------------------------------- */
 /*                                   25% OFF                                  */

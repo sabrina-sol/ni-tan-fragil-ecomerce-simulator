@@ -330,3 +330,61 @@ body {
 }
 
 /* --------------- End of Cart ---------------- */
+
+/* -------------------------------------------------------------------------- */
+/*                                   FOOTER                                   */
+/* -------------------------------------------------------------------------- */
+
+footer {
+    background-color: #808C56;
+    height: 15vh;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+/*.rrss {
+    
+}*/
+
+.rrss img {
+    filter: invert(100%) sepia(100%) saturate(0%) hue-rotate(162deg) brightness(101%) contrast(102%);
+    width: 55px;
+    height: 55px;
+    margin: 0 5px;
+}
+
+/* -------------------------------------------------------------------------- */
+/*                                MEDIA QUERIES                               */
+/* -------------------------------------------------------------------------- */
+
+@media screen and (max-width:914px) {
+    .hero h1 {
+        font-size: 5rem;
+    }
+    .hero h2 {
+        font-size: 2.8rem;
+    }
+    .hero h3 {
+        font-size: 1.4rem;
+    }
+}
+
+@media screen and (max-width:600px) {
+    .hero h1 {
+        font-size: 4rem;
+    }
+    .hero h2 {
+        font-size: 2.4rem;
+    }
+    .hero h3 {
+        font-size: 1.2rem;
+    }
+    #input-descuento {
+        font-size: 0.6rem;
+    }
+    #btn-descuento {
+        font-size: 0.6rem;
+    }
+}
