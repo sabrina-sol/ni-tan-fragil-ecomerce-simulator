@@ -119,27 +119,41 @@ function renderizar_carrito() {
             </div>
         </div>`;
         cartContent.append(cartItem);
+        //Funcionalidad para aumentar o disminuir cantidad de producto
+        let addAmount = document.querySelectorAll(".arrow-up");
+        let lowerAmount = document.querySelectorAll(".arrow-down");
+        for (let btn_add of addAmount) {
+            btn_add.addEventListener("click", suma);
+        }
+        for (let low of lowerAmount) {
+            low.addEventListener("click", resta);
+        }
         //Funcionalidad para quitar un producto
         let btn_quitar = document.querySelectorAll(".remove-item");
         for (btn of btn_quitar) {
-            btn.addEventListener("click", (e) => {
-                let elemento = e.target.parentNode.parentNode.parentNode;
-                elemento.remove();
-                let dataProducto = e.target.parentNode
-                let nombreProducto = dataProducto.children[0].innerText;
-                let aQuitar = cart.find(element => element.nombre === nombreProducto);
-                const quitarElemento = cart.some(item => item.nombre === nombreProducto);
-                if (quitarElemento) {
-                    cart.splice(cart.indexOf(aQuitar), 1);
-                    localStorage.setItem("cart", JSON.stringify(cart));
-                    calcular_total();
-                }
-            });
+            btn.addEventListener("click", quitar_producto);
         };
     });    
     //Calcular total
     calcular_total();
 };
+
+//Función quitar producto del carrito
+function quitar_producto (e) {
+    let elemento = e.target.parentNode.parentNode.parentNode;
+    elemento.remove();
+    let dataProducto = e.target.parentNode
+    let nombreProducto = dataProducto.children[0].innerText;
+    let aQuitar = cart.find(element => element.nombre === nombreProducto);
+    const quitarElemento = cart.some(item => item.nombre === nombreProducto);
+    if (quitarElemento) {
+        cart.splice(cart.indexOf(aQuitar), 1);
+        aQuitar.cantidad = 1;
+        localStorage.setItem("cart", JSON.stringify(cart));
+        actualizar_items_carrito();
+        calcular_total();
+    }
+}
 
 //Limpiar todo el carrito
 clearCartBtn.addEventListener("click", () => {
@@ -152,22 +166,45 @@ clearCartBtn.addEventListener("click", () => {
     actualizar_items_carrito();
 });
 
-//Aumentar y disminuir cantidades del producto en carrito
-//REVISAR
+//Funciones para aumentar y disminuir la cantidad del producto seleccionado en carrito
 
-let addAmount = document.querySelectorAll(".arrow-up");
-let lowerAmount = document.querySelectorAll(".arrow-down");
-
-for (let btn_add of addAmount) {
-    btn_add.addEventListener("click", hola());
+function suma (e) {
+    let div_producto = e.target.parentNode.parentNode;
+    let nombre_producto = div_producto.children[0].children[0].innerText;
+    let cantidad_producto_dom = e.target.parentNode.children[1];
+    const toChangeAmount = cart.some(item => item.nombre === nombre_producto);
+    let changeAmount = remeras_en_stock.find(element => element.nombre === nombre_producto);
+    console.log(toChangeAmount)
+    if (toChangeAmount) {
+        changeAmount.cantidad++;
+        localStorage.setItem("cart", JSON.stringify(cart));
+        cantidad_producto_dom.innerText++;
+        console.log(cantidad_producto_dom)
+        actualizar_items_carrito();
+        calcular_total();
+        console.log(changeAmount)
+    }
 }
-for (let low of lowerAmount) {
-    low.addEventListener("click", console.log("resta"));
+
+function resta (e) {
+    let div_producto = e.target.parentNode.parentNode;
+    let nombre_producto = div_producto.children[0].children[0].innerText;
+    let cantidad_producto_dom = e.target.parentNode.children[1];
+    const toChangeAmount = cart.some(item => item.nombre === nombre_producto);
+    let changeAmount = remeras_en_stock.find(element => element.nombre === nombre_producto);
+    if (toChangeAmount) {
+        changeAmount.cantidad--;
+        localStorage.setItem("cart", JSON.stringify(cart));
+        cantidad_producto_dom.innerText--;
+        actualizar_items_carrito();
+        calcular_total();
+    }
+    if (changeAmount.cantidad == 0) {
+        quitar_producto (e);
+    }
 }
 
-function hola () {
-    console.log("hola");
-};
+
 
 /* -------------------------------------------------------------------------- */
 /*                                   25% OFF                                  */
