@@ -148,10 +148,10 @@ function quitar_producto (e) {
     const quitarElemento = cart.some(item => item.nombre === nombreProducto);
     if (quitarElemento) {
         cart.splice(cart.indexOf(aQuitar), 1);
-        aQuitar.cantidad = 1;
         localStorage.setItem("cart", JSON.stringify(cart));
         actualizar_items_carrito();
         calcular_total();
+        aQuitar.cantidad = 1;
     }
 }
 
@@ -174,15 +174,12 @@ function suma (e) {
     let cantidad_producto_dom = e.target.parentNode.children[1];
     const toChangeAmount = cart.some(item => item.nombre === nombre_producto);
     let changeAmount = remeras_en_stock.find(element => element.nombre === nombre_producto);
-    console.log(toChangeAmount)
     if (toChangeAmount) {
         changeAmount.cantidad++;
         localStorage.setItem("cart", JSON.stringify(cart));
         cantidad_producto_dom.innerText++;
-        console.log(cantidad_producto_dom)
         actualizar_items_carrito();
         calcular_total();
-        console.log(changeAmount)
     }
 }
 
@@ -196,11 +193,14 @@ function resta (e) {
         changeAmount.cantidad--;
         localStorage.setItem("cart", JSON.stringify(cart));
         cantidad_producto_dom.innerText--;
+        if (changeAmount.cantidad == 0) {
+            div_producto.parentNode.remove();
+            cart.splice(cart.indexOf(changeAmount), 1);
+            localStorage.setItem("cart", JSON.stringify(cart));
+        }
         actualizar_items_carrito();
         calcular_total();
-    }
-    if (changeAmount.cantidad == 0) {
-        quitar_producto (e);
+        changeAmount.cantidad = 1;
     }
 }
 
@@ -254,9 +254,9 @@ function calcular_total () {
         total += producto.precio * producto.cantidad;
         let descuentoProductos = total * 0.25;
         if (inputOff.value === "SpringSale") {
-            off.innerText = descuentoProductos;
+            off.innerText = parseFloat(descuentoProductos.toFixed(2));
             total = total - descuentoProductos;
         }
     });
-    cartTotal.innerText = total;
+    cartTotal.innerText = parseFloat(total.toFixed(2));
 }
